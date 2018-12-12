@@ -31,6 +31,7 @@ var config = loadConfig();
 function authenticate(code, cb) {
   var data = qs.stringify({
     grant_type: 'authorization_code',
+    redirect_uri: 'http://localhost:4200/authcallback',
     client_id: config.oauth_client_id,
     client_secret: config.oauth_client_secret,
     code: code
