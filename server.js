@@ -30,10 +30,10 @@ var config = loadConfig();
 
 function authenticate(code, cb) {
   var data = qs.stringify({
+    grant_type: 'authorization_code',
     client_id: config.oauth_client_id,
     client_secret: config.oauth_client_secret,
-    code: code,
-    grant_type: 'authorization_code'
+    code: code
   });
 
   var reqOptions = {
