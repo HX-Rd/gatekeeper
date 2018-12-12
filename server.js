@@ -30,17 +30,14 @@ var config = loadConfig();
 
 function authenticate(code, cb) {
   var data = qs.stringify({
-    grant_type: 'authorization_code',
-    redirect_uri: 'http://localhost:4200/authcallback',
     client_id: config.oauth_client_id,
     client_secret: config.oauth_client_secret,
-    code: code
   });
 
   var reqOptions = {
     host: config.oauth_host,
     port: config.oauth_port,
-    path: config.oauth_path,
+    path: config.oauth_path + '?grant_type=authorization_code&code=' + code,
     method: config.oauth_method,
     headers: { 'content-length': data.length }
   };
