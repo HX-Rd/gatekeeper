@@ -38,7 +38,7 @@ function authenticate(code, redirect_uri, cb) {
   var reqOptions = {
     host: config.oauth_host,
     port: config.oauth_port,
-    path: config.oauth_path,
+    path: path,
     method: config.oauth_method,
     headers: { 
       'content-length': data.length,
