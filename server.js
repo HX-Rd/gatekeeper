@@ -97,7 +97,7 @@ app.get('/authenticate/', function(req, res) {
   authenticate(req.query.code,req.query.redirect_uri, function(err, token) {
     var result;
     if ( err || !token ) {
-      result = {"error": err || result};
+      result = {"error": err || 'Bad code'};
       log(result.error);
     } else {
       result = {"token": token};
