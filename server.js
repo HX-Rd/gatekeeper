@@ -52,15 +52,13 @@ function authenticate(code, redirect_uri, cb) {
     res.setEncoding('utf8');
     res.on('data', function (chunk) { body += chunk; });
     res.on('end', function() {
-      //cb(null, qs.parse(body).access_token);
       cb(null, body);
     });
   });
 
   req.write(data);
   req.end();
-  //req.on('error', function(e) { cb(e); });
-  req.on('error', function(e) { 'FAIL' });
+  req.on('error', function(e) { cb(e); });
 }
 
 /**
@@ -96,16 +94,15 @@ app.all('*', function (req, res, next) {
 
 app.get('/authenticate/', function(req, res) {
   log('authenticating code:', req.query.code, true);
-  authenticate(req.query.code,req.query.redirect_uri, function(err, token) {
+  authenticate(req.query.code,req.query.redirect_uri, function(err, auth_response) {
     var result;
-    if ( err || !token ) {
+    if ( err || !auth_response ) {
       result = {"error": err || 'Bad code'};
       log(result.error);
+      res.json(result);
     } else {
-      result = {"token": token};
-      log("token", result.token, true);
+      res.send(JSON.parse(auth_response));
     }
-    res.json(result);
   });
 });
 
