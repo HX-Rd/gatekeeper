@@ -52,6 +52,7 @@ function authenticate(code, redirect_uri, cb) {
     res.setEncoding('utf8');
     res.on('data', function (chunk) { body += chunk; });
     res.on('end', function() {
+      // Todo this should not ever return the refresh token, that should be keept on the server side.
       cb(null, body);
     });
   });
@@ -105,22 +106,6 @@ app.get('/authenticate/', function(req, res) {
     }
   });
 });
-
-/*app.get('/authenticate/', function(req, res) {
-  log('authenticating code:', req.query.code, true);
-  authenticate(req.query.code,req.query.redirect_uri, function(err, token) {
-    var result;
-    if ( err || !token ) {
-      result = {"error": err || 'Bad code'};
-      log(result.error);
-    } else {
-      result = {"token": token};
-      log("token", result.token, true);
-    }
-    res.json(result);
-  });
-});
-*/
 
 module.exports.config = config;
 module.exports.app = app;
