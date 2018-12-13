@@ -42,6 +42,7 @@ function authenticate(code, redirect_uri, cb) {
     path: path,
     method: config.oauth_method,
     headers: { 
+      'Authorization': authHeaderVal,
       'content-length': data.length
      }
   };
@@ -56,7 +57,6 @@ function authenticate(code, redirect_uri, cb) {
   });
 
   req.write(data);
-  req.setHeader('Authorization', authHeaderVal);
   req.end();
   req.on('error', function(e) { cb(e.message); });
 }
@@ -96,9 +96,8 @@ app.get('/authenticate/', function(req, res) {
   log('authenticating code:', req.query.code, true);
   authenticate(req.query.code,req.query.redirect_uri, function(err, token) {
     var result;
-    var testVal = 'Basic ' + Buffer.from(config.oauth_client_id + ':' + config.oauth_client_secret).toString('base64');
     if ( err || !token ) {
-      result = {"error": err || testVal};
+      result = {"error": err || result};
       log(result.error);
     } else {
       result = {"token": token};
