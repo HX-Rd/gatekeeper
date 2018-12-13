@@ -58,7 +58,7 @@ function authenticate(code, redirect_uri, cb) {
 
   req.write(data);
   req.end();
-  req.on('error', function(e) { cb(e.message); });
+  req.on('error', function(e) { cb(e); });
 }
 
 /**
