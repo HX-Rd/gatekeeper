@@ -28,14 +28,12 @@ function loadConfig() {
 
 var config = loadConfig();
 
-function authenticate(code, cb) {
+function authenticate(code, redirect_uri, cb) {
   var data = qs.stringify({
-    grant_type: 'authorization_code',
     client_id: config.oauth_client_id,
-    client_secret: config.oauth_client_secret,
-    redirect_uri: 'http://localhost:4200/authcallback',
-    code: code
   });
+
+  var path = config.oauth_path + '?code=' + code + '&grant_type=authorization_code' + '&redirect_uri=' + redirect_uri;
 
   var reqOptions = {
     host: config.oauth_host,
@@ -93,9 +91,9 @@ app.all('*', function (req, res, next) {
 });
 
 
-app.get('/authenticate/:code', function(req, res) {
+app.get('/authenticate/:code&:redirect_uri', function(req, res) {
   log('authenticating code:', req.params.code, true);
-  authenticate(req.params.code, function(err, token) {
+  authenticate(req.params.code,req.params.redirect_uri, function(err, token) {
     var result
     if ( err || !token ) {
       result = {"error": err || "bad_code"};
