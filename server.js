@@ -30,7 +30,7 @@ var config = loadConfig();
 
 function authenticate(code, redirect_uri, cb) {
   var data = qs.stringify({
-    client_id: config.oauth_client_id,
+    client_id: config.oauth_client_id
   });
 
   var path = config.oauth_path + '?code=' + code + '&grant_type=authorization_code' + '&redirect_uri=' + redirect_uri;
