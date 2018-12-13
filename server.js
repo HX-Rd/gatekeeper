@@ -30,16 +30,22 @@ var config = loadConfig();
 
 function authenticate(code, cb) {
   var data = qs.stringify({
+    grant_type: 'authorization_code',
     client_id: config.oauth_client_id,
     client_secret: config.oauth_client_secret,
+    redirect_uri: 'http://localhost:4200/authcallback',
+    code: code
   });
 
   var reqOptions = {
     host: config.oauth_host,
     port: config.oauth_port,
-    path: config.oauth_path + '?grant_type=authorization_code&code=' + code,
+    path: config.oauth_path,
     method: config.oauth_method,
-    headers: { 'content-length': data.length }
+    headers: { 
+      'content-length': data.length,
+      'Authorization': 'Basic ' + Buffer.from(config.oauth_client_id + ':' + config.oauth_client_secret).toString('base64')
+     }
   };
 
   var body = "";
