@@ -34,6 +34,7 @@ function authenticate(code, redirect_uri, cb) {
   });
 
   var path = config.oauth_path + '?code=' + code + '&grant_type=authorization_code' + '&redirect_uri=' + redirect_uri;
+  var authHeaderVal = 'Basic ' + Buffer.from(config.oauth_client_id + ':' + config.oauth_client_secret).toString('base64');
 
   var reqOptions = {
     host: config.oauth_host,
@@ -42,7 +43,7 @@ function authenticate(code, redirect_uri, cb) {
     method: config.oauth_method,
     headers: { 
       'content-length': data.length,
-      'Authorization': 'Basic ' + Buffer.from(config.oauth_client_id + ':' + config.oauth_client_secret).toString('base64')
+      'Authorization': authHeaderVal
      }
   };
 
@@ -94,9 +95,10 @@ app.all('*', function (req, res, next) {
 app.get('/authenticate/', function(req, res) {
   log('authenticating code:', req.query.code, true);
   authenticate(req.query.code,req.query.redirect_uri, function(err, token) {
-    var result
+    var result;
+    var testVal = 'Basic ' + Buffer.from(config.oauth_client_id + ':' + config.oauth_client_secret).toString('base64');
     if ( err || !token ) {
-      result = {"error": err || "bad_code"};
+      result = {"error": err || testVal};
       log(result.error);
     } else {
       result = {"token": token};
