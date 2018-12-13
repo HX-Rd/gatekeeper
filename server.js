@@ -53,7 +53,7 @@ function authenticate(code, redirect_uri, cb) {
     res.on('data', function (chunk) { body += chunk; });
     res.on('end', function() {
       //cb(null, qs.parse(body).access_token);
-      cb(null, 'SUCCESS!');
+      cb(null, body);
     });
   });
 
