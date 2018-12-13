@@ -42,8 +42,7 @@ function authenticate(code, redirect_uri, cb) {
     path: path,
     method: config.oauth_method,
     headers: { 
-      'content-length': data.length,
-      'Authorization': authHeaderVal
+      'content-length': data.length
      }
   };
 
@@ -57,6 +56,7 @@ function authenticate(code, redirect_uri, cb) {
   });
 
   req.write(data);
+  req.setHeader('Authorization', authHeaderVal);
   req.end();
   req.on('error', function(e) { cb(e.message); });
 }
