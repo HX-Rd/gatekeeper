@@ -91,9 +91,9 @@ app.all('*', function (req, res, next) {
 });
 
 
-app.get('/authenticate/:code&:redirect_uri', function(req, res) {
-  log('authenticating code:', req.params.code, true);
-  authenticate(req.params.code,req.params.redirect_uri, function(err, token) {
+app.get('/authenticate/', function(req, res) {
+  log('authenticating code:', req.query.code, true);
+  authenticate(req.query.code,req.query.redirect_uri, function(err, token) {
     var result
     if ( err || !token ) {
       result = {"error": err || "bad_code"};
